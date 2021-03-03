@@ -1,10 +1,10 @@
 using AutoFixture;
 using AutoFixture.AutoMoq;
+using AutoFixture.Idioms;
 using Moq;
 using NUnit.Framework;
 using St.Zoo.Data;
 using St.Zoo.Models;
-using System;
 using System.Collections.Generic;
 
 namespace St.Zoo.Business.Tests
@@ -12,7 +12,18 @@ namespace St.Zoo.Business.Tests
     public class ZooServiceTests
     {
         [Test]
-        public void GetTotalFoodPrice_Should_Return_Total_Price()
+        public static void EnsureConstructorArgumentsNotNull()
+        {
+            // Arrange
+            var fixture = new Fixture().Customize(new AutoMoqCustomization());
+            var assertion = new GuardClauseAssertion(fixture);
+
+            // Act, Assert
+            assertion.Verify(typeof(ZooService).GetConstructors());
+        }
+
+        [Test]
+        public void GetTotalFoodPrice_Returns_Total_Price()
         {
             // Arrange
             var fixture = new Fixture().Customize(new AutoMoqCustomization());
