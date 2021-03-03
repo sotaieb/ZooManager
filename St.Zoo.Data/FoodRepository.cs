@@ -1,7 +1,8 @@
-﻿using St.Zoo.Core;
+﻿using Microsoft.Extensions.FileProviders;
 using St.Zoo.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace St.Zoo.Data
 {
@@ -11,42 +12,44 @@ namespace St.Zoo.Data
     /// </summary>
     public class FoodRepository : IFoodRepository
     {
-        private readonly IFileService _fileService;
-        private readonly string _path;
-
+        /// <summary>
+        /// The food file info
+        /// </summary>
+        private readonly IFileInfo _fileInfo;
         /// <summary>
         /// Constructor
-        /// </summary>
-        /// <param name="fileService">The <see cref="FileService"/> object</param>
-        /// <param name="path">The file path</param>
-        public FoodRepository(IFileService fileService, string path)
+        /// </summary>        
+        /// <param name="fileInfo">The food file store</param>
+        public FoodRepository(IFileInfo fileInfo)
         {
-            if (string.IsNullOrEmpty(path))
-            {
-                throw new ArgumentException($"'{nameof(path)}' cannot be null or empty", nameof(path));
-            }
-
-            this._fileService = fileService ?? throw new ArgumentNullException(nameof(fileService));
-            this._path = path;
+            this._fileInfo = fileInfo ?? throw new ArgumentNullException(nameof(fileInfo));
         }
         
         /// <summary>
         /// Retrieve foods.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Food> FindAll()
+        public IDictionary<FoodCategory, double> FindAll()
         {
-            var foods = _fileService.ReadLines(_path);
+            if (!_fileInfo.Exists)
+            {
+                throw new FileNotFoundException("Food file not exists.");
+            }
+
+            var foods = new Dictionary<FoodCategory, double>();
 
             // The file has a strict format, no need of any checks.
-            foreach (var item in foods)
-            {
-                var row = item.Split('=');
-                yield return new Food { 
-                    FoodCategory = (FoodCategory)Enum.Parse(typeof(FoodCategory), row[0], true), 
-                    PricePerKg = double.Parse(row[1]) 
-                };
+            using (var stream = _fileInfo.CreateReadStream()) {
+                using (var reader = new StreamReader(stream))
+                {
+                    while (reader.Peek() >= 0)
+                    {
+                        var row = reader.ReadLine().Split('=');
+                        foods.Add((FoodCategory)Enum.Parse(typeof(FoodCategory), row[0], true), double.Parse(row[1]));
+                    }
+                }
             }
+            return foods;
         }
     }
 }

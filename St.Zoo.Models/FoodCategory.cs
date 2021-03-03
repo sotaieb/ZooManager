@@ -6,6 +6,7 @@
     public enum FoodCategory
     {
         Meat = 1,
-        Fruit = 2
+        Fruit = 2,
+        Both = 3
     }
 }

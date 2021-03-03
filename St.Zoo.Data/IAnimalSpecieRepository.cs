@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace St.Zoo.Data
 {
-    public interface IFoodRepository
+    public interface IAnimalSpecieRepository
     {
-        IDictionary<FoodCategory, double> FindAll();
+        IEnumerable<AnimalSpecie> FindAll();
     }
 }

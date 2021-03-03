@@ -18,4 +18,10 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\St.Zoo.Business\St.Zoo.Business.csproj" />
+    <ProjectReference Include="..\St.Zoo.Data\St.Zoo.Data.csproj" />
+    <ProjectReference Include="..\St.Zoo.Models\St.Zoo.Models.csproj" />
+  </ItemGroup>
+
 </Project>

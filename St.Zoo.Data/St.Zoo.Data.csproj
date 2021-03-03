@@ -6,10 +6,11 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="6.1.0" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\St.Zoo.Core\St.Zoo.Core.csproj" />
     <ProjectReference Include="..\St.Zoo.Models\St.Zoo.Models.csproj" />
   </ItemGroup>
 

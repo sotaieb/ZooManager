@@ -8,4 +8,9 @@
     <PackageReference Include="Autofac" Version="6.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\St.Zoo.Data\St.Zoo.Data.csproj" />
+    <ProjectReference Include="..\St.Zoo.Models\St.Zoo.Models.csproj" />
+  </ItemGroup>
+
 </Project>
