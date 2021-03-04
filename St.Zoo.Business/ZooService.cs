@@ -37,55 +37,18 @@ namespace St.Zoo.Business
             foreach (var animal in animals)
             {
                 var specie = species.SingleOrDefault(x => x.Specie == animal.Specie);
-                
-                if (specie is Carnivore carnivore)
+               
+                if (specie is Omnivore omnivore)
                 {
-                    amount += specie.GetFoodPrice(animal.Weight, foodPrices[FoodCategory.Meat]);
+                    omnivore.PricePerKg = foodPrices[FoodCategory.Meat];
+                    omnivore.FruitPricePerKg = foodPrices[FoodCategory.Fruit];
                 }
-                else if (specie is Herbivore herbivore)
-                {
-                    amount += specie.GetFoodPrice(animal.Weight, foodPrices[FoodCategory.Fruit]);
+                else {
+                    specie.PricePerKg = foodPrices[specie is Carnivore ?FoodCategory.Meat: FoodCategory.Fruit];
                 }
-                else if (specie is Omnivore omnivore)
-                {
-                    omnivore.FruitPrice = foodPrices[FoodCategory.Fruit];
-
-                    amount += specie.GetFoodPrice(animal.Weight, foodPrices[FoodCategory.Meat]);
-                }
+                amount += specie.GetFoodPrice(animal.Weight);
             }
             return amount;
         }
-
-        /// <summary>
-        /// Calculate the food price by animal name
-        /// </summary>
-        /// <param name="name">The animal name</param>
-        /// <returns>The calculated food price</returns>
-        
-        //public double GetFoodPriceByAnimalName(string name)
-        //{
-        //    var foodPrices = _foodRepository.FindAll();
-            
-        //    var animal = _animalRepository.FindAll().SingleOrDefault(x => x.Name == name);
-        //    var specie = _animalSpecieRepository.FindAll().SingleOrDefault(x => x.Specie == animal.Specie);
-
-        //    if (specie is Carnivore carnivore)
-        //    {
-        //        return Math.Round(specie.GetFoodPrice(animal.Weight, foodPrices[FoodCategory.Meat]), 2);
-        //    }
-        //    else if (specie is Herbivore herbivore)
-        //    {
-        //        return Math.Round(specie.GetFoodPrice(animal.Weight, foodPrices[FoodCategory.Fruit]), 2);
-        //    }
-        //    else if (specie is Omnivore omnivore)
-        //    {
-        //        omnivore.FruitPrice = foodPrices[FoodCategory.Fruit];
-
-        //        return Math.Round(specie.GetFoodPrice(animal.Weight, foodPrices[FoodCategory.Meat]), 2);
-        //    }
-        //    else {
-        //        throw new Exception("Invalid specie.");
-        //    }
-        //}
     }
 }

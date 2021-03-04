@@ -10,7 +10,7 @@
         /// <summary>
         /// Deorate the class with the fruit price per kg.
         /// </summary>
-        public double FruitPrice { get; set; }
+        public double FruitPricePerKg { get; set; }
 
         private readonly Herbivore _herbivore;
 
@@ -27,13 +27,13 @@
         /// <summary>
         /// Calculates the food price.
         /// </summary>
-        /// <param name="weight">the animal weight</param>
-        /// <param name="price">The meat price</param>
+        /// <param name="weight">the animal weight</param>        
         /// <returns>The food price</returns>
-        public override double GetFoodPrice(double weight, double price)
+        public override double GetFoodPrice(double weight)
         {
             // Price of meat * % + Price of fruit * (1-%)
-            return (base.GetFoodPrice(weight, price) * MeatPercentage) + (_herbivore.GetFoodPrice(weight, FruitPrice) * (1 - MeatPercentage));
+            _herbivore.PricePerKg = FruitPricePerKg;
+            return (base.GetFoodPrice(weight) * MeatPercentage) + (_herbivore.GetFoodPrice(weight) * (1 - MeatPercentage));
         }
 
     }
